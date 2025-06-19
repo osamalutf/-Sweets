@@ -1,126 +1,84 @@
-<?php
-/* Main page with two forms: sign up and log in */
-require 'db.php';
-session_start();
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign-Up/Login</title>
-  <!-- Include your CSS file for better styling -->
-  <?php include 'css/css.html'; ?>
+    <meta charset="UTF-8">
+    <title>صفحة دخول أنيقة</title>
+    <style>
+        /* reset بسيط */
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"Cairo",sans-serif}
+
+        /* خلفية صفحة كاملة بصورة وتدرّج نصف‑شفاف */
+        body{
+            min-height:100vh;
+            background:
+                linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.55)),
+                url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1650&q=80");
+            background-size:cover;
+            background-position:center;
+            display:flex;align-items:center;justify-content:center;
+            color:#fff;
+        }
+
+        /* حاوية نموذج الدخول */
+        .login-card{
+            width:360px;
+            padding:2.5rem 2rem 3rem;
+            border-radius:16px;
+            background:rgba(255,255,255,0.08);
+            box-shadow:0 8px 24px rgba(0,0,0,.25);
+            backdrop-filter:blur(6px);
+            -webkit-backdrop-filter:blur(6px);
+            animation:fade-in .9s ease;
+        }
+
+        h1{font-size:1.8rem;margin-bottom:1.6rem;text-align:center}
+
+        label{display:block;font-size:.95rem;margin:.75rem 0 .35rem}
+
+        input{
+            width:100%;padding:.7rem .9rem;border:none;border-radius:12px;
+            background:rgba(255,255,255,.15);color:#fff;
+            outline:none;font-size:.9rem;transition:.25s;
+        }
+
+        input:focus{background:rgba(255,255,255,.25)}
+
+        button{
+            margin-top:1.8rem;width:100%;padding:.8rem 0;
+            border:none;border-radius:14px;
+            background:#5d8cff;cursor:pointer;font-size:1rem;font-weight:600;
+            color:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);
+            transition:.3s;
+        }
+        button:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.35)}
+
+        .links{margin-top:1rem;font-size:.85rem;text-align:center}
+        .links a{color:#a0c5ff;text-decoration:none}
+        .links a:hover{text-decoration:underline}
+
+        /* دخول سلسي */
+        @keyframes fade-in{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:none}}
+    </style>
 </head>
-
-<?php
-if ($_SERVER['REQUEST_METHOD'] == 'POST')
-{
-    if (isset($_POST['login'])) { // user logging in
-        require 'login.php'; // handle login process
-    }
-    elseif (isset($_POST['register'])) { // user registering
-        require 'register.php'; // handle registration process
-    }
-}
-?>
 <body>
-  <div class="form">
 
-      <ul class="tab-group">
-        <li class="tab"><a href="#signup">Sign Up</a></li>
-        <li class="tab active"><a href="#login">Log In</a></li>
-      </ul>
+<div class="login-card">
+    <h1>تسجيل الدخول</h1>
+    <form action="login_process.php" method="POST">
+        <label for="email">البريد الإلكتروني</label>
+        <input type="email" id="email" name="email" required>
 
-      <div class="tab-content">
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" name="password" required>
 
-         <!-- Log In Form -->
-         <div id="login">
-          <h1>Welcome Back!</h1>
+        <button type="submit">دخول</button>
+    </form>
 
-          <form action="index.php" method="post" autocomplete="off">
-
-            <div class="field-wrap" style="height:35px">
-            <label>
-              Email Address<span class="req">*</span>
-            </label>
-            <input type="email" required autocomplete="off" name="email" />
-          </div>
-
-          <div class="field-wrap">
-            <label>
-              Password<span class="req">*</span>
-            </label>
-            <input type="password" required autocomplete="off" name="password" />
-          </div>
-
-          <button class="button button-block" name="login" type="submit" />Log In</button>
-
-          </form>
-        </div>
-
-        <!-- Sign Up Form -->
-        <div id="signup">
-          <h1>Sign Up for Free</h1>
-
-          <form action="index.php" method="post" autocomplete="off">
-
-          <div class="top-row">
-            <div class="field-wrap">
-              <label>
-                First Name<span class="req">*</span>
-              </label>
-              <input type="text" required autocomplete="off" name="firstname" />
-            </div>
-
-            <div class="field-wrap">
-              <label>
-                Last Name<span class="req">*</span>
-              </label>
-              <input type="text" required autocomplete="off" name="lastname" />
-            </div>
-          </div>
-
-          <div class="field-wrap">
-            <label>
-              Email Address<span class="req">*</span>
-            </label>
-            <input type="email" required autocomplete="off" name="email" />
-          </div>
-
-          <div class="field-wrap">
-            <label>
-              Address<span class="req">*</span>
-            </label>
-            <input type="text" required autocomplete="off" name="address" />
-          </div>
-
-          <div class="field-wrap">
-            <label>
-              Phone Number<span class="req">*</span>
-            </label>
-            <input type="tel" required autocomplete="off" name="phone" />
-          </div>
-
-          <div class="field-wrap">
-            <label>
-              Set A Password<span class="req">*</span>
-            </label>
-            <input type="password" required autocomplete="off" name="password" />
-          </div>
-
-          <button type="submit" class="button button-block" name="register" />Register</button>
-
-          </form>
-        </div>
-
-      </div><!-- tab-content -->
-
-  </div> <!-- /form -->
-
-  <!-- Include JQuery and JS for animations and handling -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="js/index.js"></script>
+    <div class="links">
+        <a href="register.php">إنشاء حساب</a> ‧
+        <a href="forget.php">نسيت كلمة المرور؟</a>
+    </div>
+</div>
 
 </body>
 </html>
